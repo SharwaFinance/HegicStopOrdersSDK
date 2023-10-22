@@ -1,6 +1,7 @@
 # TakeProfitSharwa
 
 initialization
+
 ``` const tps = new TakeProfitSharwa(provider, signer) ```
 
 set
