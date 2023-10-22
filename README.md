@@ -1,23 +1,29 @@
 # TakeProfitSharwa
 
-initialization
+**Initialization:**
 
 ``` const tps = new TakeProfitSharwa(provider, signer) ```
 
-set
+Set:
+
 ``` await tps.setTakeProfit(7216n, BigInt(1600e8), 0) ```
 
-update
+Update:
+
 ``` await tps.setTakeProfit(7216n, 0, BigInt(1600e8)) ```
 
-del
+Del:
+
 ``` await tps.deleteTakeProfit(7216n) ```
 
-ActiveTakeProfits
+ActiveTakeProfits:
+
 ``` await tps.getActiveTakeProfits(deployer.getAddress()) ```
 
-AllTakeProfits
+AllTakeProfits:
+
 ``` await tps.getAllTakeProfits(deployer.getAddress()) ```
 
-ExecuteTakeProfits
+ExecuteTakeProfits:
+
 ``` await tps.getExecuteTakeProfits(deployer.getAddress()) ```
