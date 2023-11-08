@@ -4,26 +4,50 @@
 
 ``` const tps = new TakeProfitSharwa(provider, signer) ```
 
-**Set:**
+**Enable Auto-Execution for option:**
+
+``` await tps.enableAutoExecutionForOption(7216n) ```
+
+**Enable Auto-Execution for all options:**
+
+``` await tps.enableAutoExecutionForAllOptions() ```
+
+**Disable Auto-Execution for all options:**
+
+``` await tps.disableAutoExecutionForAllOptions() ```
+
+**Set take profits:**
 
 ``` await tps.setTakeProfit(7216n, BigInt(1600e8), 0) ```
 
-**Update:**
+**Update take profits:**
 
 ``` await tps.setTakeProfit(7216n, 0, BigInt(1600e8)) ```
 
-**Del:**
+**Delete take profits:**
 
 ``` await tps.deleteTakeProfit(7216n) ```
 
-**ActiveTakeProfits:**
+**Identify options with auto-execution enabled**
 
-``` await tps.getActiveTakeProfits(deployer.getAddress()) ```
+```const optionsWithAutoExecutionEnabled = await tps.filterOptionsWithAutoExecutionEnabled(deployer.getAddress(), arrAcivaOptions)```
 
-**AllTakeProfits:**
+**Identify options with set take profits**
 
-``` await tps.getAllTakeProfits(deployer.getAddress()) ```
+```const optionsWithTakeProfits = await tps.filterOptionsWithTakeProfits(deployer.getAddress(), arrAcivaOptions)```
 
-**ExecuteTakeProfits:**
+**Determine auto-executed options**
 
-``` await tps.getExecuteTakeProfits(deployer.getAddress()) ```
+```const autoExecutedOptions = await tps.getAutoExecutedOptions(deployer.getAddress(), arrAcivaOptions)```
+
+**Get active take profits:**
+
+```const activeTakeProfits = await tps.getActiveTakeProfits(deployer.getAddress()) ```
+
+**Get all take profits:**
+
+``` const allTakeProfits = await tps.getAllTakeProfits(deployer.getAddress()) ```
+
+**Receive executed take profits:**
+
+``` const executeTakeProfits = await tps.getExecuteTakeProfits(deployer.getAddress()) ```

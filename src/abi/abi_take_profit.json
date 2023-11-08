@@ -1,5 +1,4 @@
-export const AddressTakeProfit = "0x1E578C112E56519edDd13B3DCFF488A5798C67bf"
-export const AbiTakeProfit = [
+[
   {
     "inputs": [
       {
@@ -56,6 +55,12 @@ export const AbiTakeProfit = [
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       }
     ],
     "name": "TakeProfitExecuted",
@@ -208,6 +213,25 @@ export const AbiTakeProfit = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "isOptionActive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "operationalTreasury",
     "outputs": [
@@ -334,3 +358,6 @@ export const AbiTakeProfit = [
     "type": "function"
   }
 ]
+
+
+  

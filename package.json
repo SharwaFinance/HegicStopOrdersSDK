@@ -1,19 +1,16 @@
 {
-  "name": "npmTakeProfit",
+  "name": "take_profit_sharwaFinance",
   "version": "1.0.0",
-  "description": "",
+  "description": "take_profit_sharwaFinance is a TypeScript class for interacting with Ethereum contracts related to managing take profits. The class provides functions to interact with the contracts and query data about take profits.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "0nika0",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@types/node": "^20.8.4",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "ethers": "^6.7.1"
+    "ethers": "^6.8.0"
   }
 }
