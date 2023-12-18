@@ -1,6 +1,6 @@
 {
   "name": "@sharwa.finance/take-profit",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "TakeProfitSharwaFinance is a TS class for interacting with Ethereum contracts related to managing take profits. The class provides functions to interact with the contracts and query data about take profits.",
   "main": "index.js",
   "keywords": [],
@@ -12,5 +12,16 @@
   },
   "dependencies": {
     "ethers": "^6.8.0"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SharwaFinance/TakeProfitSharwa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SharwaFinance/TakeProfitSharwa/issues"
+  },
+  "homepage": "https://github.com/SharwaFinance/TakeProfitSharwa#readme"
 }
