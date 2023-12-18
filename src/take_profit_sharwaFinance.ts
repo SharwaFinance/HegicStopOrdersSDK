@@ -12,7 +12,7 @@ type TakeProfitData = {
     blockNumber: bigint
 }
 
-export class take_profit_sharwaFinance {
+export class TakeProfitSharwaFinance {
     signer: Signer
     provider: Provider
     take_profit: Contract
