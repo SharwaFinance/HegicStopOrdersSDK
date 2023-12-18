@@ -267,9 +267,9 @@ export class TakeProfitSharwaFinance {
         return userSetLogs
     }
 
-    // ASSISTANT FUNCTIONS //
+    // PRIVATE FUNCTIONS //
 
-    isApprovalForAllData(array: (EventLog | Log)[]): boolean {
+    private isApprovalForAllData(array: (EventLog | Log)[]): boolean {
         if (array.length == 0) {
             return false
         }
@@ -291,7 +291,7 @@ export class TakeProfitSharwaFinance {
         return returnArr[returnArr.length-1];
     }
 
-    uniqArrayData(array: (EventLog | Log)[]): bigint[] {
+    private uniqArrayData(array: (EventLog | Log)[]): bigint[] {
         const arr: bigint[] = []
         array.forEach(item => {
             if (item instanceof EventLog) {
@@ -309,7 +309,7 @@ export class TakeProfitSharwaFinance {
         return arr
     }
 
-    uniqTransferData(array: (EventLog | Log)[]): TransferData[] {
+    private uniqTransferData(array: (EventLog | Log)[]): TransferData[] {
         const map = new Map<BigInt,TransferData>();
         array.forEach(item => {
             let decodeData: TransferData = {} as TransferData;
@@ -335,7 +335,7 @@ export class TakeProfitSharwaFinance {
         return Array.from(map.values());
     }
 
-    uniqTakeProfitData(array: (EventLog | Log)[]): TakeProfitData[] {
+    private uniqTakeProfitData(array: (EventLog | Log)[]): TakeProfitData[] {
         const map = new Map<BigInt, TakeProfitData>();
         array.forEach(item => {
             let decodeData: TakeProfitData = {} as TakeProfitData;
