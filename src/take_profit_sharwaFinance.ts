@@ -1,5 +1,4 @@
 import { Contract, Provider, Signer, EventLog, Log, Interface, ZeroAddress } from "ethers";
-import { Address } from "cluster";
 import conf from "./config.json";
 import abi_take_profit from "./abi/abi_take_profit.json";
 import abi_positions_manager from "./abi/abi_positions_manager.json";
@@ -62,7 +61,7 @@ export class TakeProfitSharwaFinance {
 
     // FILTER_OPTIONS FUNCTIONS //
 
-    async filterOptionsWithAutoExecutionEnabled(user: Address, arrAcivaOptions: bigint[]): Promise<bigint[]> {
+    async filterOptionsWithAutoExecutionEnabled(user: string, arrAcivaOptions: bigint[]): Promise<bigint[]> {
         const ApprovalFilter = this.positions_manager.filters.Approval(user, conf.take_profit_address, null)
         const arrApproval = await this.positions_manager.queryFilter(ApprovalFilter)
         const uniqApprovalLogs = this.uniqTransferData(arrApproval)
@@ -101,7 +100,7 @@ export class TakeProfitSharwaFinance {
         return autoExecutionOptions
     }
 
-    async filterOptionsWithTakeProfits(user: Address, arrAcivaOptions: bigint[]): Promise<Map<bigint,TakeProfitData>> {
+    async filterOptionsWithTakeProfits(user: string, arrAcivaOptions: bigint[]): Promise<Map<bigint,TakeProfitData>> {
         let activeTakeProfits = new Map()
 
         const TakeProfitSetFilter = this.take_profit.filters.TakeProfitSet(null, user)
@@ -138,7 +137,7 @@ export class TakeProfitSharwaFinance {
         return activeTakeProfits
     }
 
-    async getAutoExecutedOptions(user: Address, arrAcivaOptions: bigint[]): Promise<bigint[]> {
+    async getAutoExecutedOptions(user: string, arrAcivaOptions: bigint[]): Promise<bigint[]> {
         let executeTakeProfits: bigint[] = []
 
         for (const i in arrAcivaOptions) {
@@ -159,13 +158,13 @@ export class TakeProfitSharwaFinance {
         return await this.positions_manager.isApprovedOrOwner(conf.take_profit_address, tokenId)
     }
 
-    async isAutoExecutionEnabledForAllOptions(user: Address): Promise<boolean> {
+    async isAutoExecutionEnabledForAllOptions(user: string): Promise<boolean> {
         const ApprovalForAllFilter = this.positions_manager.filters.ApprovalForAll(user, conf.take_profit_address, null)
         const arrApprovalForAll = await this.positions_manager.queryFilter(ApprovalForAllFilter)
         return this.isApprovalForAllData(arrApprovalForAll)
     }
 
-    async getActiveTakeProfits(user: Address): Promise<Map<bigint,TakeProfitData>> {
+    async getActiveTakeProfits(user: string): Promise<Map<bigint,TakeProfitData>> {
         let activeTakeProfits = new Map()
         const userSetLogs = await this.getUserSetLogs(user)
 
@@ -194,7 +193,7 @@ export class TakeProfitSharwaFinance {
         return activeTakeProfits
     }
 
-    async getAllTakeProfits(user: Address): Promise<Map<bigint,TakeProfitData>> {
+    async getAllTakeProfits(user: string): Promise<Map<bigint,TakeProfitData>> {
         let allTakeProfits = new Map()
         const userSetLogs = await this.getUserSetLogs(user)
 
@@ -218,7 +217,7 @@ export class TakeProfitSharwaFinance {
         return allTakeProfits
     }
 
-    async getExecuteTakeProfits(user: Address): Promise<bigint[]> {
+    async getExecuteTakeProfits(user: string): Promise<bigint[]> {
         const TakeProfitExecutedFilter = this.take_profit.filters.TakeProfitExecuted(null, user)
         const arrLogsTakeProfitExecuted = (await this.take_profit.queryFilter(TakeProfitExecutedFilter)).reverse()
 
@@ -235,7 +234,7 @@ export class TakeProfitSharwaFinance {
         return executeTakeProfits
     }
 
-    async getUserSetLogs(user: Address): Promise<TakeProfitData[]> {
+    async getUserSetLogs(user: string): Promise<TakeProfitData[]> {
         const TransferInFilter = this.positions_manager.filters.Transfer(null, user, null)
         const arrLogsTransferIn = await this.positions_manager.queryFilter(TransferInFilter)
         const uniqTransfersIn = this.uniqTransferData(arrLogsTransferIn)
