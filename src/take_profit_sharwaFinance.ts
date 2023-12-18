@@ -1,4 +1,4 @@
-import { Contract, Provider, Signer, EventLog, Log, ZeroAddress } from "ethers";
+import { Contract, Provider, Signer, EventLog, Log, Interface, ZeroAddress } from "ethers";
 import { Address } from "cluster";
 import conf from "./config.json";
 import abi_take_profit from "./abi/abi_take_profit.json";
@@ -6,10 +6,15 @@ import abi_positions_manager from "./abi/abi_positions_manager.json";
 import abi_operational_treasury from "./abi/abi_operational_treasury.json"
 
 type TakeProfitData = {
-    tokenId: bigint
+    tokenId: BigInt
     upperStopPrice: number
     lowerStopPrice: number
-    blockNumber: bigint
+    blockNumber: number
+}
+
+type TransferData = {
+    tokenId: BigInt,
+    blockNumber: number
 }
 
 export class TakeProfitSharwaFinance {
@@ -18,6 +23,7 @@ export class TakeProfitSharwaFinance {
     take_profit: Contract
     positions_manager: Contract
     operational_treasury: Contract
+    iface: Interface
 
     constructor(provider: Provider, signer: Signer) {
         this.provider = provider
@@ -25,6 +31,7 @@ export class TakeProfitSharwaFinance {
         this.take_profit = new Contract(conf.take_profit_address, abi_take_profit, signer)
         this.positions_manager = new Contract(conf.positions_manager_address, abi_positions_manager, signer)
         this.operational_treasury = new Contract(conf.operational_treasury_address, abi_operational_treasury, signer)
+        this.iface = new Interface(abi_take_profit)
     }
 
     // STATE CHANGE FUNCTIONS //
@@ -270,9 +277,16 @@ export class TakeProfitSharwaFinance {
         const map = new Map();
         array.forEach(item => {
             if (item instanceof EventLog) {
-                map.set(
-                    item.blockNumber, item.args.approved);
+                map.set(item.blockNumber, item.args.approved);
+            } else if (item instanceof Log) {
+                const data = item.data
+                const topics = [...item.topics]
+                const decodeLog = this.iface.parseLog({data, topics})
+                if (decodeLog === null) {
+                    throw new Error("Failed to decode log");
                 }
+                map.set(item.blockNumber, decodeLog.args.approved);
+            }
           })
         const returnArr = Array.from(map.values())
         return returnArr[returnArr.length-1];
@@ -283,37 +297,71 @@ export class TakeProfitSharwaFinance {
         array.forEach(item => {
             if (item instanceof EventLog) {
                 arr.push(item.args[0])
+            } else if (item instanceof Log) {
+                const data = item.data
+                const topics = [...item.topics]
+                const decodeLog = this.iface.parseLog({data, topics})
+                if (decodeLog === null) {
+                    throw new Error("Failed to decode log");
+                }
+                arr.push(decodeLog.args[0])
             }
         })
         return arr
     }
 
-    uniqTransferData(array: (EventLog | Log)[]): {tokenId:bigint, blockNumber:bigint}[] {
-        const map = new Map();
+    uniqTransferData(array: (EventLog | Log)[]): TransferData[] {
+        const map = new Map<BigInt,TransferData>();
         array.forEach(item => {
+            let decodeData: TransferData = {} as TransferData;
             if (item instanceof EventLog) {
-                map.set(
-                    item.args.tokenId, {
-                        tokenId: item.args.tokenId,
-                        blockNumber: item.blockNumber
-                    });
+                decodeData = {
+                    tokenId: item.args.tokenId,
+                    blockNumber: item.blockNumber
                 }
+            } else if (item instanceof Log) {
+                const data = item.data
+                const topics = [...item.topics]
+                const decodeLog = this.iface.parseLog({data, topics})
+                if (decodeLog === null) {
+                    throw new Error("Failed to decode log");
+                }
+                decodeData = {
+                    tokenId: decodeLog.args.tokenId,
+                    blockNumber: item.blockNumber
+                }
+            }
+            map.set(decodeData.tokenId, decodeData);
           })
         return Array.from(map.values());
     }
 
     uniqTakeProfitData(array: (EventLog | Log)[]): TakeProfitData[] {
-        const map = new Map();
+        const map = new Map<BigInt, TakeProfitData>();
         array.forEach(item => {
+            let decodeData: TakeProfitData = {} as TakeProfitData;
             if (item instanceof EventLog) {
-              map.set(
-                item.args.tokenId, {
-                tokenId: item.args.tokenId, 
-                upperStopPrice: item.args.upperStopPrice, 
-                lowerStopPrice: item.args.lowerStopPrice,
-                blockNumber: item.blockNumber
-                });
+                decodeData = {
+                    tokenId: item.args.tokenId, 
+                    upperStopPrice: item.args.upperStopPrice, 
+                    lowerStopPrice: item.args.lowerStopPrice,
+                    blockNumber: item.blockNumber
+                }
+            } else if (item instanceof Log) {
+                const data = item.data
+                const topics = [...item.topics]
+                const decodeLog = this.iface.parseLog({data, topics})
+                if (decodeLog === null) {
+                    throw new Error("Failed to decode log");
+                }
+                decodeData = {
+                    tokenId: decodeLog.args.tokenId, 
+                    upperStopPrice: decodeLog.args.upperStopPrice, 
+                    lowerStopPrice: decodeLog.args.lowerStopPrice,
+                    blockNumber: item.blockNumber
+                };
             }
+            map.set(decodeData.tokenId, decodeData);
           })
         return Array.from(map.values());
     }
