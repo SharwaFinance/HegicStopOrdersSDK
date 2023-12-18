@@ -64,15 +64,15 @@ export class TakeProfitSharwaFinance {
     async filterOptionsWithAutoExecutionEnabled(user: string, arrAcivaOptions: bigint[]): Promise<bigint[]> {
         const ApprovalFilter = this.positions_manager.filters.Approval(user, conf.take_profit_address, null)
         const arrApproval = await this.positions_manager.queryFilter(ApprovalFilter)
-        const uniqApprovalLogs = this.uniqTransferData(arrApproval)
+        const uniqApprovalLogs = this._uniqTransferData(arrApproval)
 
         const DisableApprovalFilter = this.positions_manager.filters.Approval(user, ZeroAddress, null)
         const arrDisableApproval = await this.positions_manager.queryFilter(DisableApprovalFilter)
-        const uniqDisableApprovalLogs = this.uniqTransferData(arrDisableApproval)
+        const uniqDisableApprovalLogs = this._uniqTransferData(arrDisableApproval)
 
         const ApprovalForAllFilter = this.positions_manager.filters.ApprovalForAll(user, conf.take_profit_address, null)
         const arrApprovalForAll = await this.positions_manager.queryFilter(ApprovalForAllFilter)
-        const isApprovalForAll = this.isApprovalForAllData(arrApprovalForAll)
+        const isApprovalForAll = this._isApprovalForAllData(arrApprovalForAll)
 
         const autoExecutionOptions: bigint[] = []
 
@@ -105,7 +105,7 @@ export class TakeProfitSharwaFinance {
 
         const TakeProfitSetFilter = this.take_profit.filters.TakeProfitSet(null, user)
         const arrLogsTakeProfitSet = await this.take_profit.queryFilter(TakeProfitSetFilter)
-        const uniqSetLogs = this.uniqTakeProfitData(arrLogsTakeProfitSet) 
+        const uniqSetLogs = this._uniqTakeProfitData(arrLogsTakeProfitSet) 
 
         for (const i in arrAcivaOptions) {
             const logSet = uniqSetLogs.find(elem=> elem.tokenId === arrAcivaOptions[i]);
@@ -161,7 +161,7 @@ export class TakeProfitSharwaFinance {
     async isAutoExecutionEnabledForAllOptions(user: string): Promise<boolean> {
         const ApprovalForAllFilter = this.positions_manager.filters.ApprovalForAll(user, conf.take_profit_address, null)
         const arrApprovalForAll = await this.positions_manager.queryFilter(ApprovalForAllFilter)
-        return this.isApprovalForAllData(arrApprovalForAll)
+        return this._isApprovalForAllData(arrApprovalForAll)
     }
 
     async getActiveTakeProfits(user: string): Promise<Map<bigint,TakeProfitData>> {
@@ -237,15 +237,15 @@ export class TakeProfitSharwaFinance {
     async getUserSetLogs(user: string): Promise<TakeProfitData[]> {
         const TransferInFilter = this.positions_manager.filters.Transfer(null, user, null)
         const arrLogsTransferIn = await this.positions_manager.queryFilter(TransferInFilter)
-        const uniqTransfersIn = this.uniqTransferData(arrLogsTransferIn)
+        const uniqTransfersIn = this._uniqTransferData(arrLogsTransferIn)
 
         const TransferOutFilter = this.positions_manager.filters.Transfer(user, null, null)
         const arrLogsTransferOut = await this.positions_manager.queryFilter(TransferOutFilter)
-        const uniqTransfersOut = this.uniqTransferData(arrLogsTransferOut)
+        const uniqTransfersOut = this._uniqTransferData(arrLogsTransferOut)
 
         const TakeProfitSetFilter = this.take_profit.filters.TakeProfitSet(null, user)
         const arrLogsTakeProfitSet = await this.take_profit.queryFilter(TakeProfitSetFilter)
-        const uniqSetLogs = this.uniqTakeProfitData(arrLogsTakeProfitSet) 
+        const uniqSetLogs = this._uniqTakeProfitData(arrLogsTakeProfitSet) 
 
         const userSetLogs: TakeProfitData[] = []
 
@@ -269,7 +269,7 @@ export class TakeProfitSharwaFinance {
 
     // PRIVATE FUNCTIONS //
 
-    private isApprovalForAllData(array: (EventLog | Log)[]): boolean {
+    private _isApprovalForAllData(array: (EventLog | Log)[]): boolean {
         if (array.length == 0) {
             return false
         }
@@ -291,7 +291,7 @@ export class TakeProfitSharwaFinance {
         return returnArr[returnArr.length-1];
     }
 
-    private uniqArrayData(array: (EventLog | Log)[]): bigint[] {
+    private _uniqArrayData(array: (EventLog | Log)[]): bigint[] {
         const arr: bigint[] = []
         array.forEach(item => {
             if (item instanceof EventLog) {
@@ -309,7 +309,7 @@ export class TakeProfitSharwaFinance {
         return arr
     }
 
-    private uniqTransferData(array: (EventLog | Log)[]): TransferData[] {
+    private _uniqTransferData(array: (EventLog | Log)[]): TransferData[] {
         const map = new Map<BigInt,TransferData>();
         array.forEach(item => {
             let decodeData: TransferData = {} as TransferData;
@@ -335,7 +335,7 @@ export class TakeProfitSharwaFinance {
         return Array.from(map.values());
     }
 
-    private uniqTakeProfitData(array: (EventLog | Log)[]): TakeProfitData[] {
+    private _uniqTakeProfitData(array: (EventLog | Log)[]): TakeProfitData[] {
         const map = new Map<BigInt, TakeProfitData>();
         array.forEach(item => {
             let decodeData: TakeProfitData = {} as TakeProfitData;
