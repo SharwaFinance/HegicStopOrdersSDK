@@ -1,7 +1,7 @@
 {
   "name": "@sharwa.finance/take-profit",
   "version": "1.0.0",
-  "description": "TakeProfitSharwaFinance is a ts class for interacting with Ethereum contracts related to managing take profits. The class provides functions to interact with the contracts and query data about take profits.",
+  "description": "TakeProfitSharwaFinance is a TS class for interacting with Ethereum contracts related to managing take profits. The class provides functions to interact with the contracts and query data about take profits.",
   "main": "index.js",
   "keywords": [],
   "author": "0nika0",
