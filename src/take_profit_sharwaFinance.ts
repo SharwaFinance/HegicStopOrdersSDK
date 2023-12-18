@@ -5,14 +5,14 @@ import abi_positions_manager from "./abi/abi_positions_manager.json";
 import abi_operational_treasury from "./abi/abi_operational_treasury.json"
 
 type TakeProfitData = {
-    tokenId: BigInt
+    tokenId: bigint
     upperStopPrice: number
     lowerStopPrice: number
     blockNumber: number
 }
 
 type TransferData = {
-    tokenId: BigInt,
+    tokenId: bigint,
     blockNumber: number
 }
 
@@ -35,11 +35,11 @@ export class TakeProfitSharwaFinance {
 
     // STATE CHANGE FUNCTIONS //
 
-    async setTakeProfit(tokenId: BigInt, upperStopPrice: BigInt, lowerStopPrice: BigInt) {
+    async setTakeProfit(tokenId: bigint, upperStopPrice: bigint, lowerStopPrice: bigint) {
         await this.take_profit.setTakeProfit(tokenId, {upperStopPrice, lowerStopPrice})
     }
 
-    async deleteTakeProfit(tokenId: BigInt) {
+    async deleteTakeProfit(tokenId: bigint) {
         await this.take_profit.deleteTakeProfit(tokenId)
     }
 
@@ -51,11 +51,11 @@ export class TakeProfitSharwaFinance {
         await this.positions_manager.setApprovalForAll(conf.take_profit_address, false)
     }
 
-    async enableAutoExecutionForOption(tokenId: BigInt) {
+    async enableAutoExecutionForOption(tokenId: bigint) {
         await this.positions_manager.approve(conf.take_profit_address, tokenId)
     }
 
-    async disableAutoExecutionForOption(tokenId: BigInt) {
+    async disableAutoExecutionForOption(tokenId: bigint) {
         await this.positions_manager.approve(ZeroAddress, tokenId)
     }
 
@@ -154,7 +154,7 @@ export class TakeProfitSharwaFinance {
 
     // DATA QUERY FUNCTIONS //
 
-    async isAutoExecutionEnabledForOption(tokenId: BigInt): Promise<boolean> {
+    async isAutoExecutionEnabledForOption(tokenId: bigint): Promise<boolean> {
         return await this.positions_manager.isApprovedOrOwner(conf.take_profit_address, tokenId)
     }
 
@@ -310,7 +310,7 @@ export class TakeProfitSharwaFinance {
     }
 
     private _uniqTransferData(array: (EventLog | Log)[]): TransferData[] {
-        const map = new Map<BigInt,TransferData>();
+        const map = new Map<bigint,TransferData>();
         array.forEach(item => {
             let decodeData: TransferData = {} as TransferData;
             if (item instanceof EventLog) {
@@ -336,7 +336,7 @@ export class TakeProfitSharwaFinance {
     }
 
     private _uniqTakeProfitData(array: (EventLog | Log)[]): TakeProfitData[] {
-        const map = new Map<BigInt, TakeProfitData>();
+        const map = new Map<bigint, TakeProfitData>();
         array.forEach(item => {
             let decodeData: TakeProfitData = {} as TakeProfitData;
             if (item instanceof EventLog) {
