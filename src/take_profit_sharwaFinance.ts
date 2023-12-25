@@ -1,4 +1,4 @@
-import { Contract, Provider, Signer, EventLog, Log, Interface, ZeroAddress } from "ethers";
+import { Contract, Provider, Signer, EventLog, Log, Interface, ZeroAddress, TransactionResponse } from "ethers";
 import conf from "./config.json";
 import abi_take_profit from "./abi/abi_take_profit.json";
 import abi_positions_manager from "./abi/abi_positions_manager.json";
@@ -35,28 +35,28 @@ export class TakeProfitSharwaFinance {
 
     // STATE CHANGE FUNCTIONS //
 
-    async setTakeProfit(tokenId: bigint, upperStopPrice: bigint, lowerStopPrice: bigint) {
-        await this.take_profit.setTakeProfit(tokenId, {upperStopPrice, lowerStopPrice})
+    async setTakeProfit(tokenId: bigint, upperStopPrice: bigint, lowerStopPrice: bigint): Promise<TransactionResponse> {
+        return await this.take_profit.setTakeProfit(tokenId, {upperStopPrice, lowerStopPrice})
     }
 
-    async deleteTakeProfit(tokenId: bigint) {
-        await this.take_profit.deleteTakeProfit(tokenId)
+    async deleteTakeProfit(tokenId: bigint): Promise<TransactionResponse> {
+        return await this.take_profit.deleteTakeProfit(tokenId)
     }
 
-    async enableAutoExecutionForAllOptions() {
-        await this.positions_manager.setApprovalForAll(conf.take_profit_address, true)
+    async enableAutoExecutionForAllOptions(): Promise<TransactionResponse> {
+        return await this.positions_manager.setApprovalForAll(conf.take_profit_address, true)
     }
 
-    async disableAutoExecutionForAllOptions() {
-        await this.positions_manager.setApprovalForAll(conf.take_profit_address, false)
+    async disableAutoExecutionForAllOptions(): Promise<TransactionResponse> {
+        return await this.positions_manager.setApprovalForAll(conf.take_profit_address, false)
     }
 
-    async enableAutoExecutionForOption(tokenId: bigint) {
-        await this.positions_manager.approve(conf.take_profit_address, tokenId)
+    async enableAutoExecutionForOption(tokenId: bigint): Promise<TransactionResponse> {
+        return await this.positions_manager.approve(conf.take_profit_address, tokenId)
     }
 
-    async disableAutoExecutionForOption(tokenId: bigint) {
-        await this.positions_manager.approve(ZeroAddress, tokenId)
+    async disableAutoExecutionForOption(tokenId: bigint): Promise<TransactionResponse> {
+        return await this.positions_manager.approve(ZeroAddress, tokenId)
     }
 
     // FILTER_OPTIONS FUNCTIONS //

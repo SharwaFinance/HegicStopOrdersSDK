@@ -6,27 +6,27 @@
 
 **Enable Auto-Execution for option:**
 
-``` await tps.enableAutoExecutionForOption(7216n) ```
+``` tx = await tps.enableAutoExecutionForOption(7216n) ```
 
 **Enable Auto-Execution for all options:**
 
-``` await tps.enableAutoExecutionForAllOptions() ```
+``` tx = await tps.enableAutoExecutionForAllOptions() ```
 
 **Disable Auto-Execution for all options:**
 
-``` await tps.disableAutoExecutionForAllOptions() ```
+``` tx = await tps.disableAutoExecutionForAllOptions() ```
 
 **Set take profits:**
 
-``` await tps.setTakeProfit(7216n, BigInt(1600e8), 0) ```
+``` tx = await tps.setTakeProfit(7216n, BigInt(1600e8), 0) ```
 
 **Update take profits:**
 
-``` await tps.setTakeProfit(7216n, 0, BigInt(1600e8)) ```
+``` tx = await tps.setTakeProfit(7216n, 0, BigInt(1600e8)) ```
 
 **Delete take profits:**
 
-``` await tps.deleteTakeProfit(7216n) ```
+``` tx = await tps.deleteTakeProfit(7216n) ```
 
 **Identify options with auto-execution enabled**
 
