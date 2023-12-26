@@ -100,10 +100,10 @@ export class TakeProfitSharwaFinance {
         return autoExecutionOptions
     }
 
-    async filterOptionsWithTakeProfits(user: string, arrAcivaOptions: bigint[]): Promise<Map<bigint,TakeProfitData>> {
+    async filterOptionsWithTakeProfits(arrAcivaOptions: bigint[]): Promise<Map<bigint,TakeProfitData>> {
         let activeTakeProfits = new Map()
 
-        const TakeProfitSetFilter = this.take_profit.filters.TakeProfitSet(null, user)
+        const TakeProfitSetFilter = this.take_profit.filters.TakeProfitSet(arrAcivaOptions, null)
         const arrLogsTakeProfitSet = await this.take_profit.queryFilter(TakeProfitSetFilter)
         const uniqSetLogs = this._uniqTakeProfitData(arrLogsTakeProfitSet) 
 
@@ -137,7 +137,7 @@ export class TakeProfitSharwaFinance {
         return activeTakeProfits
     }
 
-    async getAutoExecutedOptions(user: string, arrAcivaOptions: bigint[]): Promise<bigint[]> {
+    async getAutoExecutedOptions(arrAcivaOptions: bigint[]): Promise<bigint[]> {
         let executeTakeProfits: bigint[] = []
 
         for (const i in arrAcivaOptions) {
@@ -164,9 +164,9 @@ export class TakeProfitSharwaFinance {
         return this._isApprovalForAllData(arrApprovalForAll)
     }
 
-    async getActiveTakeProfits(user: string): Promise<Map<bigint,TakeProfitData>> {
+    async _getActiveTakeProfits(user: string): Promise<Map<bigint,TakeProfitData>> {
         let activeTakeProfits = new Map()
-        const userSetLogs = await this.getUserSetLogs(user)
+        const userSetLogs = await this._getUserSetLogs(user)
 
         for (const i in userSetLogs) {
             const TakeProfitDeletedFilter = this.take_profit.filters.TakeProfitDeleted(userSetLogs[i].tokenId)
@@ -193,9 +193,9 @@ export class TakeProfitSharwaFinance {
         return activeTakeProfits
     }
 
-    async getAllTakeProfits(user: string): Promise<Map<bigint,TakeProfitData>> {
+    async _getAllTakeProfits(user: string): Promise<Map<bigint,TakeProfitData>> {
         let allTakeProfits = new Map()
-        const userSetLogs = await this.getUserSetLogs(user)
+        const userSetLogs = await this._getUserSetLogs(user)
 
         for (const i in userSetLogs) {
             const TakeProfitDeletedFilter = this.take_profit.filters.TakeProfitDeleted(userSetLogs[i].tokenId)
@@ -217,7 +217,7 @@ export class TakeProfitSharwaFinance {
         return allTakeProfits
     }
 
-    async getExecuteTakeProfits(user: string): Promise<bigint[]> {
+    async _getExecuteTakeProfits(user: string): Promise<bigint[]> {
         const TakeProfitExecutedFilter = this.take_profit.filters.TakeProfitExecuted(null, user)
         const arrLogsTakeProfitExecuted = (await this.take_profit.queryFilter(TakeProfitExecutedFilter)).reverse()
 
@@ -234,7 +234,7 @@ export class TakeProfitSharwaFinance {
         return executeTakeProfits
     }
 
-    async getUserSetLogs(user: string): Promise<TakeProfitData[]> {
+    async _getUserSetLogs(user: string): Promise<TakeProfitData[]> {
         const TransferInFilter = this.positions_manager.filters.Transfer(null, user, null)
         const arrLogsTransferIn = await this.positions_manager.queryFilter(TransferInFilter)
         const uniqTransfersIn = this._uniqTransferData(arrLogsTransferIn)

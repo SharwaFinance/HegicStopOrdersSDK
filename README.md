@@ -34,20 +34,8 @@
 
 **Identify options with set take profits**
 
-```const optionsWithTakeProfits = await tps.filterOptionsWithTakeProfits(deployer.getAddress(), arrAcivaOptions)```
+```const optionsWithTakeProfits = await tps.filterOptionsWithTakeProfits(arrAcivaOptions)```
 
 **Determine auto-executed options**
 
-```const autoExecutedOptions = await tps.getAutoExecutedOptions(deployer.getAddress(), arrAcivaOptions)```
-
-**Get active take profits:**
-
-```const activeTakeProfits = await tps.getActiveTakeProfits(deployer.getAddress()) ```
-
-**Get all take profits:**
-
-``` const allTakeProfits = await tps.getAllTakeProfits(deployer.getAddress()) ```
-
-**Receive executed take profits:**
-
-``` const executeTakeProfits = await tps.getExecuteTakeProfits(deployer.getAddress()) ```
+```const autoExecutedOptions = await tps.getAutoExecutedOptions(arrAcivaOptions)```
