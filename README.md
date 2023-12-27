@@ -1,4 +1,24 @@
-# TakeProfitSharwa
+# HegicStopOrders SDK Documentation
+
+HegicStopOrdersSDK is a specialized SDK package designed to facilitate interaction with HegicStopOrders contracts. It enables the automatic execution of options based on time and price triggers.
+
+## Features
+
+The SDK facilitates:
+
+1. Enabling Auto-Execution for a specified option.
+2. Enabling Auto-Execution for all options.
+3. Disabling Auto-Execution for all options.
+4. Setting up stop orders that will automatically close the position when a price trigger is met.
+5. Updating the trigger price for existing stop orders.
+6. Deleting (cancelling) stop orders.
+7. Retrieving options for which auto-execution is enabled.
+8. Retrieving options for which take profit is enabled.
+9. Obtaining the list of auto-executed options.
+
+## Support
+
+If you have questions about how to use the SDK, please reach out in the `#dev-chat` channel in our Discord.
 
 **Initialization:**
 
